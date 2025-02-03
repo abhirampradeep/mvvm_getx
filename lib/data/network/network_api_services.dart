@@ -31,9 +31,9 @@ class NetworkApiServices extends BaseApiServices {
 
     dynamic responseJson;
     try {
-      final response = await http.post(Uri.parse(url),
-      body: jsonEncode(data)
-      );
+      // final response = await http.post(Uri.parse(url), body: jsonEncode(data));
+            final response = await http.post(Uri.parse(url), body: data);
+
       responseJson = returnResponse(response);
     } on SocketException {
       throw InternetException('no internet connection');
@@ -41,10 +41,13 @@ class NetworkApiServices extends BaseApiServices {
       throw RequestTimeout('no request');
     }
 
+    print(responseJson);
+
     return responseJson;
   }
 
   dynamic returnResponse(http.Response response) {
+    print(response.statusCode);
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
